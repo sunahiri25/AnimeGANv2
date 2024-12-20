@@ -1,5 +1,5 @@
 # The edge_smooth.py is from taki0112/CartoonGAN-Tensorflow https://github.com/taki0112/CartoonGAN-Tensorflow#2-do-edge_smooth
-from tools.utils import check_folder
+from AnimeGANv2.tools.utils import check_folder
 import numpy as np
 import cv2, os, argparse
 from glob import glob
@@ -13,7 +13,7 @@ def parse_args():
 
     return parser.parse_args()
 
-def make_edge_smooth(dataset_name, img_size) :
+# def make_edge_smooth(dataset_name, img_size) :
     check_folder(os.path.dirname(os.path.dirname(__file__))+'/dataset/{}/{}'.format(dataset_name, 'smooth'))
 
     file_list = glob(os.path.dirname(os.path.dirname(__file__))+'/dataset/{}/{}/*.*'.format(dataset_name, 'style'))
@@ -49,6 +49,41 @@ def make_edge_smooth(dataset_name, img_size) :
 
         cv2.imwrite(os.path.join(save_dir, file_name), gauss_img)
 
+def make_edge_smooth(dataset_name, img_size) :
+    check_folder('/kaggle/working/AnimeGANv2/dataset/{}/{}'.format(dataset_name, 'smooth'))
+
+    file_list = os.listdir('/kaggle/working/AnimeGANv2/dataset/{}/{}/'.format(dataset_name, 'style'))
+    save_dir ='/kaggle/working/AnimeGANv2/dataset/{}/smooth'.format(dataset_name)
+
+    kernel_size = 5
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    gauss = cv2.getGaussianKernel(kernel_size, 0)
+    gauss = gauss * gauss.transpose(1, 0)
+
+    for f in file_list:
+        file_name = '/kaggle/working/AnimeGANv2/dataset/{}/{}/{}'.format(dataset_name, 'style', f)
+
+        bgr_img = cv2.imread(file_name)
+        gray_img = cv2.imread(file_name, 0)
+        bgr_img = cv2.resize(bgr_img, (img_size, img_size))
+        pad_img = np.pad(bgr_img, ((2, 2), (2, 2), (0, 0)), mode='reflect')
+        gray_img = cv2.resize(gray_img, (img_size, img_size))
+
+        edges = cv2.Canny(gray_img, 100, 200)
+        dilation = cv2.dilate(edges, kernel)
+
+        gauss_img = np.copy(bgr_img)
+        idx = np.where(dilation != 0)
+        for i in range(np.sum(dilation != 0)):
+            gauss_img[idx[0][i], idx[1][i], 0] = np.sum(
+                np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 0], gauss))
+            gauss_img[idx[0][i], idx[1][i], 1] = np.sum(
+                np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 1], gauss))
+            gauss_img[idx[0][i], idx[1][i], 2] = np.sum(
+                np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 2], gauss))
+
+        cv2.imwrite(os.path.join(save_dir, f), gauss_img)
+        
 """main"""
 def main():
     # parse arguments

@@ -1,22 +1,22 @@
 import argparse
-from tools.utils import *
+from AnimeGANv2.tools.utils import *
 import os
 from tqdm import tqdm
 from glob import glob
 import time
 import numpy as np
-from net import generator
+from AnimeGANv2.net import generator
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 def parse_args():
     desc = "AnimeGANv2"
     parser = argparse.ArgumentParser(description=desc)
 
-    parser.add_argument('--checkpoint_dir', type=str, default='checkpoint/'+'generator_Shinkai_weight',
+    parser.add_argument('--checkpoint_dir', type=str, default='/kaggle/working/AnimeGANv2/checkpoint/'+'generator_Shinkai_weight',
                         help='Directory name to save the checkpoints')
-    parser.add_argument('--test_dir', type=str, default='dataset/test/t',
+    parser.add_argument('--test_dir', type=str, default='/kaggle/working/AnimeGANv2/dataset/test/t',
                         help='Directory name of test photos')
-    parser.add_argument('--save_dir', type=str, default='Shinkai/t',
+    parser.add_argument('--save_dir', type=str, default='/kaggle/working/AnimeGANv2/Shinkai/t',
                         help='what style you want to get')
     parser.add_argument('--if_adjust_brightness', type=bool, default=True,
                         help='adjust brightness by the real photo')
@@ -32,7 +32,7 @@ def stats_graph(graph):
 
 def test(checkpoint_dir, style_name, test_dir, if_adjust_brightness, img_size=[256,256]):
     # tf.reset_default_graph()
-    result_dir = 'results/'+style_name
+    result_dir = '/kaggle/working/AnimeGANv2/results/'+style_name
     check_folder(result_dir)
     test_files = glob('{}/*.*'.format(test_dir))
 

@@ -1,12 +1,12 @@
-from tools.ops import *
-from tools.utils import *
+from AnimeGANv2.tools.ops import *
+from AnimeGANv2.tools.utils import *
 from glob import glob
 import time
 import numpy as np
-from net import generator
-from net.discriminator import D_net
-from tools.data_loader import ImageGenerator
-from tools.vgg19 import Vgg19
+from AnimeGANv2.net import generator
+from AnimeGANv2.net.discriminator import D_net
+from AnimeGANv2.tools.data_loader import ImageGenerator
+from AnimeGANv2.tools.vgg19 import Vgg19
 
 class AnimeGANv2(object) :
     def __init__(self, sess, args):
@@ -57,9 +57,9 @@ class AnimeGANv2(object) :
         self.anime_gray = tf.placeholder(tf.float32, [self.batch_size, self.img_size[0], self.img_size[1], self.img_ch],name='anime_B')
 
 
-        self.real_image_generator = ImageGenerator('./dataset/train_photo', self.img_size, self.batch_size)
-        self.anime_image_generator = ImageGenerator('./dataset/{}'.format(self.dataset_name + '/style'), self.img_size, self.batch_size)
-        self.anime_smooth_generator = ImageGenerator('./dataset/{}'.format(self.dataset_name + '/smooth'), self.img_size, self.batch_size)
+        self.real_image_generator = ImageGenerator('/kaggle/working/AnimeGANv2/dataset/train_photo', self.img_size, self.batch_size)
+        self.anime_image_generator = ImageGenerator('/kaggle/working/AnimeGANv2/dataset/{}'.format(self.dataset_name + '/style'), self.img_size, self.batch_size)
+        self.anime_smooth_generator = ImageGenerator('/kaggle/working/AnimeGANv2/dataset/{}'.format(self.dataset_name + '/smooth'), self.img_size, self.batch_size)
         self.dataset_num = max(self.real_image_generator.num_images, self.anime_image_generator.num_images)
 
         self.vgg = Vgg19()
@@ -273,7 +273,7 @@ class AnimeGANv2(object) :
 
             if epoch >= self.init_epoch -1:
                 """ Result Image """
-                val_files = glob('./dataset/{}/*.*'.format('val'))
+                val_files = glob('/kaggle/working/AnimeGANv2/dataset/{}/*.*'.format('val'))
                 save_path = './{}/{:03d}/'.format(self.sample_dir, epoch)
                 check_folder(save_path)
                 for i, sample_file in enumerate(val_files):

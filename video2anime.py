@@ -4,7 +4,7 @@ import cv2
 from tqdm import tqdm
 import numpy as np
 import tensorflow as tf
-from net import generator
+from AnimeGANv2.net import generator
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
