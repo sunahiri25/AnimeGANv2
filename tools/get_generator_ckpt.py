@@ -1,7 +1,7 @@
 import argparse
-from .utils import *
+from utils import *
 import os
-from net import generator
+from ..net import generator
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 

@@ -1,6 +1,6 @@
-from .AnimeGANv2 import AnimeGANv2
+from AnimeGANv2 import AnimeGANv2
 import argparse
-from .tools.utils import *
+from tools.utils import *
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
