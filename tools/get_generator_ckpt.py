@@ -1,7 +1,7 @@
 import argparse
 from utils import *
 import os
-from ..net import generator
+from net import generator
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
@@ -9,7 +9,7 @@ def parse_args():
     desc = "AnimeGANv2"
     parser = argparse.ArgumentParser(description=desc)
 
-    parser.add_argument('--checkpoint_dir', type=str, default='/kaggle/working/AnimeGANv2/checkpoint/' + 'AnimeGANv2_Hayao_lsgan_300_300_1_2_10_1',
+    parser.add_argument('--checkpoint_dir', type=str, default='checkpoint/' + 'AnimeGANv2_Hayao_lsgan_300_300_1_2_10_1',
                         help='Directory name to save the checkpoints')
     parser.add_argument('--style_name', type=str, default='Hayao',
                         help='what style you want to get')
@@ -22,7 +22,7 @@ def save(saver, sess, checkpoint_dir, model_name):
     return  save_path
 
 def main(checkpoint_dir, style_name):
-    ckpt_dir = '/kaggle/working/AnimeGANv2/checkpoint/' + 'generator_' + style_name + '_weight'
+    ckpt_dir = 'checkpoint/' + 'generator_' + style_name + '_weight'
     check_folder(ckpt_dir)
 
     placeholder = tf.placeholder(tf.float32, [1, None, None, 3], name='generator_input')
