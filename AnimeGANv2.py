@@ -1,12 +1,12 @@
-from AnimeGANv2.tools.ops import *
-from AnimeGANv2.tools.utils import *
+from .tools.ops import *
+from .tools.utils import *
 from glob import glob
 import time
 import numpy as np
-from AnimeGANv2.net import generator
-from AnimeGANv2.net.discriminator import D_net
-from AnimeGANv2.tools.data_loader import ImageGenerator
-from AnimeGANv2.tools.vgg19 import Vgg19
+from .net import generator
+from .net.discriminator import D_net
+from .tools.data_loader import ImageGenerator
+from .tools.vgg19 import Vgg19
 
 class AnimeGANv2(object) :
     def __init__(self, sess, args):

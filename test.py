@@ -1,11 +1,11 @@
 import argparse
-from AnimeGANv2.tools.utils import *
+from .tools.utils import *
 import os
 from tqdm import tqdm
 from glob import glob
 import time
 import numpy as np
-from AnimeGANv2.net import generator
+from .net import generator
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 def parse_args():
